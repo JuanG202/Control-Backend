@@ -1,20 +1,35 @@
 const express = require("express");
 const cors = require("cors");
 
-const app = express();
-
+const express = require("express");
 const cors = require("cors");
 
+const app = express();
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://control-frontend-mu.vercel.app"
+];
+
 app.use(cors({
-  origin: [
-    "http://localhost:5173", // tu local
-    "https://control-frontend-mu.vercel.app" // tu frontend en producción
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: function (origin, callback) {
+    
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("CORS no permitido"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
 
+
 app.options("*", cors());
+
 app.use(express.json());
 
 // Rutas
