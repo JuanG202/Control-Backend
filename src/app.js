@@ -3,7 +3,17 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+const cors = require("cors");
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173", // tu local
+    "https://control-frontend-mu.vercel.app" // tu frontend en producción
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Rutas
